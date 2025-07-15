@@ -5,13 +5,16 @@ import time
 
 from selenium.webdriver.chrome.options import Options
 
+from selenium.webdriver.chrome.service import Service
+service = Service(executable_path="/usr/bin/chromedriver")
+
 options = Options()
-options.add_argument("--headless")
+options.add_argument("--headless") # 창 없음
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
 url = "https://pokemonkorea.co.kr/pokedex"
-driver = wb.Chrome() 
+driver = wb.Chrome(service=service, options=options)
 driver.maximize_window()
 driver.get(url)
 img = driver.find_element(By.CSS_SELECTOR, "img.img-fluid")
@@ -24,12 +27,11 @@ driver.close()
 
 import csv
 import os
-
 pokemon_exist = os.path.exists("pokemon.csv")
 header = ["no", "name"]
 
 with open("pokemon.csv", "a", newline="") as file:
-    writer =csv.writer(file)
+    writer = csv.writer(file)
 
     if not pokemon_exist:
         writer.writerow(header)
